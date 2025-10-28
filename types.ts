@@ -12,6 +12,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      suppliers: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          logo_url: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          logo_url?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          logo_url?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
       schools: {
         Row: {
           id: string
@@ -75,18 +99,21 @@ export type Database = {
           full_name: string | null
           role: string
           school_id: string | null
+          supplier_id: string | null
         }
         Insert: {
           id: string
           full_name?: string | null
           role?: string
           school_id?: string | null
+          supplier_id?: string | null
         }
         Update: {
           id?: string
           full_name?: string | null
           role?: string
           school_id?: string | null
+          supplier_id?: string | null
         }
         // FIX: Add Relationships property to fix Supabase type inference.
         Relationships: [
@@ -94,6 +121,12 @@ export type Database = {
             foreignKeyName: "profiles_school_id_fkey"
             columns: ["school_id"]
             referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_supplier_id_fkey"
+            columns: ["supplier_id"]
+            referencedRelation: "suppliers"
             referencedColumns: ["id"]
           },
         ]
@@ -106,6 +139,7 @@ export type Database = {
           price: number
           image_url: string | null
           category: string | null
+          supplier_id: string | null
         }
         Insert: {
           id?: string
@@ -114,6 +148,7 @@ export type Database = {
           price: number
           image_url?: string | null
           category?: string | null
+          supplier_id?: string | null
         }
         Update: {
           id?: string
@@ -122,9 +157,17 @@ export type Database = {
           price?: number
           image_url?: string | null
           category?: string | null
+          supplier_id?: string | null
         }
         // FIX: Add Relationships property to fix Supabase type inference.
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "products_supplier_id_fkey"
+            columns: ["supplier_id"]
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       supply_lists: {
         Row: {
@@ -209,6 +252,7 @@ export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type Product = Database['public']['Tables']['products']['Row'];
 export type SupplyList = Database['public']['Tables']['supply_lists']['Row'];
 export type SupplyListItem = Database['public']['Tables']['supply_list_items']['Row'];
+export type Supplier = Database['public']['Tables']['suppliers']['Row'];
 
 export interface DetailedSupplyListItem {
     id: string;

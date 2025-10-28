@@ -88,6 +88,9 @@ const handleSignOut = async () => {
             {profile?.role === 'school_admin' && (
               <Link to="/school-admin" className="text-gray-600 hover:text-blue-600 transition-colors">School Portal</Link>
             )}
+            {profile?.role === 'supplier_admin' && (
+              <Link to="/supplier-admin" className="text-gray-600 hover:text-blue-600 transition-colors">Supplier Portal</Link>
+            )}
           </nav>
           <div className="flex items-center space-x-4">
             <Link to="/cart" className="relative text-gray-600 hover:text-blue-600 transition-colors">

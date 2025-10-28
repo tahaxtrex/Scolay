@@ -20,6 +20,7 @@ import SuppliersPage from './pages/SuppliersPage';
 import SupplierProductsPage from './pages/SupplierProductsPage';
 import { supabase } from './services/supabase';
 import SchoolAdminPage from './pages/Schooladminpage';
+import SupplierAdminPage from './pages/SupplierAdminPage';
 
 
 
@@ -66,6 +67,14 @@ function App() {
                       </ProtectedRoute>
                     } 
                   />
+                  <Route 
+                  path="/supplier-admin" 
+                  element={
+                    <ProtectedRoute role="supplier_admin">
+                      <SupplierAdminPage />
+                    </ProtectedRoute>
+                  } 
+                />
                   <Route 
                   path="/school-admin" 
                   element={
