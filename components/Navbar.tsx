@@ -28,7 +28,6 @@ const Navbar: React.FC = () => {
             <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors">Home</Link>
             <Link to="/schools" className="text-gray-600 hover:text-blue-600 transition-colors">Schools</Link>
             <Link to="/suppliers" className="text-gray-600 hover:text-blue-600 transition-colors">Suppliers</Link>
-            <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors">How It Works</Link>
             {profile?.role === 'admin' && (
               <Link to="/admin" className="text-gray-600 hover:text-blue-600 transition-colors">Admin</Link>
             )}
