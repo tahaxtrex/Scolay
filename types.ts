@@ -8,7 +8,8 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+// FIX: Changed interface to type to fix Supabase type inference issues.
+export type Database = {
   public: {
     Tables: {
       schools: {
@@ -36,6 +37,8 @@ export interface Database {
           description?: string | null
           logo_url?: string | null
         }
+        // FIX: Add Relationships property to fix Supabase type inference.
+        Relationships: []
       }
       grade_levels: {
         Row: {
@@ -56,6 +59,15 @@ export interface Database {
           school_id?: string
           created_at?: string
         }
+        // FIX: Add Relationships property to fix Supabase type inference.
+        Relationships: [
+          {
+            foreignKeyName: "grade_levels_school_id_fkey"
+            columns: ["school_id"]
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -76,6 +88,15 @@ export interface Database {
           role?: string
           school_id?: string | null
         }
+        // FIX: Add Relationships property to fix Supabase type inference.
+        Relationships: [
+          {
+            foreignKeyName: "profiles_school_id_fkey"
+            columns: ["school_id"]
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
@@ -102,6 +123,8 @@ export interface Database {
           image_url?: string | null
           category?: string | null
         }
+        // FIX: Add Relationships property to fix Supabase type inference.
+        Relationships: []
       }
       supply_lists: {
         Row: {
@@ -119,6 +142,15 @@ export interface Database {
           grade_level_id?: string
           academic_year?: string
         }
+        // FIX: Add Relationships property to fix Supabase type inference.
+        Relationships: [
+          {
+            foreignKeyName: "supply_lists_grade_level_id_fkey"
+            columns: ["grade_level_id"]
+            referencedRelation: "grade_levels"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       supply_list_items: {
         Row: {
@@ -139,6 +171,21 @@ export interface Database {
           product_id?: string
           quantity?: number
         }
+        // FIX: Add Relationships property to fix Supabase type inference.
+        Relationships: [
+          {
+            foreignKeyName: "supply_list_items_product_id_fkey"
+            columns: ["product_id"]
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supply_list_items_supply_list_id_fkey"
+            columns: ["supply_list_id"]
+            referencedRelation: "supply_lists"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

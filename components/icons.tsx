@@ -91,3 +91,27 @@ export const CashIcon = ({ className }: { className?: string }) => (
 export const StorefrontIcon = ({ className }: { className?: string }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5A.75.75 0 0012.75 12h-1.5a.75.75 0 00-.75.75V21m-4.5 0H21m-16.5 0H3m16.5 0V6.375c0-1.621-1.328-2.936-2.964-2.889-1.376.043-2.57 1.12-2.67 2.477A3.75 3.75 0 0112 9.75v1.5a.75.75 0 01-.75.75h-2.25a.75.75 0 01-.75-.75v-1.5m3-3l-3-3m0 0l-3 3m3-3v12" /></svg>
 );
+
+export const ChatBubbleIcon = ({ className }: { className?: string }) => (
+  <img
+    src="https://www.svgrepo.com/download/521504/chat-dots.svg"
+    alt="Chat"
+    className={`w-6 h-6 filter brightness-0 invert ${className || ''}`}
+  />
+);
+
+
+
+
+
+export const CloseIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+export const SendIcon = ({ className }: { className?: string }) => (
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+    </svg>
+);

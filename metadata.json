@@ -1,5 +1,7 @@
 {
   "name": "Scolay",
   "description": "A streamlined, web-based e-commerce platform designed to simplify the school supply shopping process for parents, students, and schools.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "gemini"
+  ]
 }

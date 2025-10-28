@@ -11,6 +11,8 @@ const SchoolAdminPage: React.FC = () => {
     const [error, setError] = useState('');
 
     const [description, setDescription] = useState('');
+    const [address, setAddress] = useState('');
+    const [logoUrl, setLogoUrl] = useState('');
     const [newGradeName, setNewGradeName] = useState('');
     const [isSaving, setIsSaving] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
@@ -36,10 +38,12 @@ const SchoolAdminPage: React.FC = () => {
 
             if (schoolError) throw schoolError;
             if (!schoolData) throw new Error("School not found.");
-
+            
             const typedSchool = schoolData as School;
             setSchool(typedSchool);
             setDescription(typedSchool.description || '');
+            setAddress(typedSchool.address || '');
+            setLogoUrl(typedSchool.logo_url || '');
 
             const { data: gradesData, error: gradesError } = await supabase
                 .from('grade_levels')
@@ -57,14 +61,16 @@ const SchoolAdminPage: React.FC = () => {
         }
     };
     
-    const handleUpdateDescription = async (e: FormEvent) => {
+    const handleUpdateProfile = async (e: FormEvent) => {
         e.preventDefault();
         if (!school) return;
         setIsSaving(true);
         setSuccessMessage('');
 
         const schoolUpdate: Database['public']['Tables']['schools']['Update'] = {
-            description: description,
+            description,
+            address,
+            logo_url: logoUrl,
         };
 
         const { error } = await (supabase
@@ -73,9 +79,11 @@ const SchoolAdminPage: React.FC = () => {
             .eq('id', school.id);
         
         if (error) {
-            setError("Failed to update description.");
+            setError("Failed to update school profile.");
         } else {
-            setSuccessMessage("Description updated successfully!");
+            setSuccessMessage("Profile updated successfully!");
+            // Refresh school data locally
+            setSchool(prev => prev ? { ...prev, ...schoolUpdate } : null);
         }
         setIsSaving(false);
         setTimeout(() => setSuccessMessage(''), 3000);
@@ -116,8 +124,16 @@ const SchoolAdminPage: React.FC = () => {
         <div className="bg-gray-50 min-h-screen">
             <header className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold text-gray-900">{school.name} - Admin Portal</h1>
-                    <p className="text-gray-600 mt-1">Welcome, {profile?.full_name || 'Admin'}.</p>
+                    <div className="flex items-center space-x-4">
+                        {school.logo_url && (
+                             <img src={school.logo_url} alt={`${school.name} logo`} className="h-16 w-16 object-contain rounded-md border p-1" />
+                        )}
+                        <div>
+                            <h1 className="text-3xl font-bold text-gray-900">{school.name}</h1>
+                            <p className="text-gray-600 mt-1">{school.address}</p>
+                        </div>
+                    </div>
+                    <p className="text-gray-600 mt-2">Welcome, {profile?.full_name || 'Admin'}.</p>
                 </div>
             </header>
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -128,7 +144,7 @@ const SchoolAdminPage: React.FC = () => {
                         {/* School Profile Management */}
                         <div className="bg-white p-6 rounded-lg shadow">
                             <h2 className="text-2xl font-semibold text-gray-800 mb-4">School Profile</h2>
-                            <form onSubmit={handleUpdateDescription}>
+                            <form onSubmit={handleUpdateProfile} className="space-y-4">
                                 <div>
                                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">School Description</label>
                                     <textarea
@@ -140,9 +156,31 @@ const SchoolAdminPage: React.FC = () => {
                                         placeholder="Tell parents about your school..."
                                     ></textarea>
                                 </div>
+                                <div>
+                                    <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+                                    <input
+                                        id="address"
+                                        type="text"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="e.g., 123 Main St, Rabat, Morocco"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="logo_url" className="block text-sm font-medium text-gray-700">Logo URL</label>
+                                    <input
+                                        id="logo_url"
+                                        type="url"
+                                        value={logoUrl}
+                                        onChange={(e) => setLogoUrl(e.target.value)}
+                                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        placeholder="https://example.com/logo.png"
+                                    />
+                                </div>
                                 <div className="mt-4 text-right">
                                     <button type="submit" disabled={isSaving} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300">
-                                        {isSaving ? 'Saving...' : 'Save Description'}
+                                        {isSaving ? 'Saving...' : 'Save Profile'}
                                     </button>
                                 </div>
                             </form>

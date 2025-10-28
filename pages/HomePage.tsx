@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 import { School, Grade, SupplyList } from '../types';
 import { CheckCircleIcon, ArrowRightIcon, StepIcon1, StepIcon2, StepIcon3, StepIcon4 } from '../components/icons';
+import Chatbot from '../components/chatBot';
 
 const HomePage: React.FC = () => {
   return (
@@ -10,6 +12,7 @@ const HomePage: React.FC = () => {
       <HeroSection />
       <HowItWorksSection />
       <FindSuppliesSection />
+      <Chatbot />
     </div>
   );
 };
@@ -111,8 +114,7 @@ const FindSuppliesSection = () => {
         const fetchSchools = async () => {
             const { data, error } = await supabase.from('schools').select('*');
             if (error) console.error('Error fetching schools:', error);
-            // Fix: Cast Supabase result to the correct type to avoid `never[]` inference issue.
-            else setSchools((data as School[]) || []);
+            else setSchools(data || []);
         };
         fetchSchools();
     }, []);
@@ -124,8 +126,7 @@ const FindSuppliesSection = () => {
                 setSelectedGrade('');
                 const { data, error } = await supabase.from('grade_levels').select('*').eq('school_id', selectedSchool);
                 if (error) console.error('Error fetching grades:', error);
-                // Fix: Cast Supabase result to the correct type to avoid `never[]` inference issue.
-                else setGrades((data as Grade[]) || []);
+                else setGrades(data || []);
                 setLoading(false);
             };
             fetchGrades();
@@ -154,8 +155,7 @@ const FindSuppliesSection = () => {
                 setError('Could not find a supply list for the selected grade.');
                 console.error(error);
             } else {
-                // FIX: Cast `data` to fix `never` type inference from Supabase.
-                navigate(`/list/${(data as SupplyList).id}`);
+                navigate(`/list/${data.id}`);
             }
         } catch (err) {
             setError('An unexpected error occurred.');
