@@ -18,6 +18,12 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import SchoolsPage from './pages/SchoolsPage';
 import SuppliersPage from './pages/SuppliersPage';
 import SupplierProductsPage from './pages/SupplierProductsPage';
+import { supabase } from './services/supabase';
+
+const { data, error } = await supabase.from('schools').select('*');
+console.log("Data:", data);
+console.log("Error:", error);
+
 
 function App() {
   return (
