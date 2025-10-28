@@ -19,6 +19,7 @@ import SchoolsPage from './pages/SchoolsPage';
 import SuppliersPage from './pages/SuppliersPage';
 import SupplierProductsPage from './pages/SupplierProductsPage';
 import { supabase } from './services/supabase';
+import SchoolAdminPage from './pages/Schooladminpage';
 
 
 
@@ -39,7 +40,8 @@ function App() {
                   <Route path="/suppliers" element={<SuppliersPage />} />
                   <Route path="/suppliers/:supplierId/products" element={<SupplierProductsPage />} />
                   <Route path="/list/:listId" element={<SupplyListPage />} />
-                  <Route path="/cart" element={<CartPage />} />
+                    <Route path="/cart" element={<ProtectedRoute> <CartPage /></ProtectedRoute>} />
+                  
                   <Route 
                     path="/checkout"
                     element={
@@ -47,7 +49,7 @@ function App() {
                         <CheckoutPage />
                       </ProtectedRoute>
                     }
-                  />
+                    />
                    <Route 
                     path="/order-confirmation"
                     element={
@@ -55,7 +57,7 @@ function App() {
                         <OrderConfirmationPage />
                       </ProtectedRoute>
                     }
-                  />
+                    />
                   <Route 
                     path="/admin" 
                     element={
@@ -64,6 +66,14 @@ function App() {
                       </ProtectedRoute>
                     } 
                   />
+                  <Route 
+                  path="/school-admin" 
+                  element={
+                    <ProtectedRoute role="school_admin">
+                      <SchoolAdminPage />
+                    </ProtectedRoute>
+                  } 
+                />
                 </Routes>
               </main>
               <Footer />

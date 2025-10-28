@@ -4,16 +4,36 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { CartIcon } from './icons';
+// import { profile } from 'console';
 
 const Navbar: React.FC = () => {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, setSession, setProfile, setUser } = useAuth();
   const { itemCount } = useCart();
   const navigate = useNavigate();
 
-  const handleSignOut = async () => {
+  // const handleSignOut = async () => {
+  //   await signOut();
+  //   navigate('/');
+  // };
+
+const handleSignOut = async () => {
+  try {
+    // Supabase logout
     await signOut();
+  } catch (error: any) {
+    console.warn('Supabase signOut failed:', error.message);
+  } finally {
+    // Clear local state manually (these come from your AuthContext)
+    setSession(null);
+    setProfile(null);
+    setUser(null);
+
+    // Clear storage and refresh
+    localStorage.clear();
+    window.location.reload();
     navigate('/');
-  };
+  }
+};
 
   return (
     <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
@@ -30,6 +50,9 @@ const Navbar: React.FC = () => {
             <Link to="/suppliers" className="text-gray-600 hover:text-blue-600 transition-colors">Suppliers</Link>
             {profile?.role === 'admin' && (
               <Link to="/admin" className="text-gray-600 hover:text-blue-600 transition-colors">Admin</Link>
+            )}
+            {profile?.role === 'school_admin' && (
+              <Link to="/school-admin" className="text-gray-600 hover:text-blue-600 transition-colors">School Portal</Link>
             )}
           </nav>
           <div className="flex items-center space-x-4">

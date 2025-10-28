@@ -8,8 +8,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-// FIX: Changed interface to type to fix Supabase type inference issues.
-export type Database = {
+export interface Database {
   public: {
     Tables: {
       schools: {
@@ -18,18 +17,24 @@ export type Database = {
           name: string
           address: string | null
           created_at: string
+          description: string | null
+          logo_url: string | null
         }
         Insert: {
           id?: string
           name: string
           address?: string | null
           created_at?: string
+          description?: string | null
+          logo_url?: string | null
         }
         Update: {
           id?: string
           name?: string
           address?: string | null
           created_at?: string
+          description?: string | null
+          logo_url?: string | null
         }
       }
       grade_levels: {
@@ -57,16 +62,19 @@ export type Database = {
           id: string
           full_name: string | null
           role: string
+          school_id: string | null
         }
         Insert: {
           id: string
           full_name?: string | null
           role?: string
+          school_id?: string | null
         }
         Update: {
           id?: string
           full_name?: string | null
           role?: string
+          school_id?: string | null
         }
       }
       products: {
@@ -77,7 +85,6 @@ export type Database = {
           price: number
           image_url: string | null
           category: string | null
-          supplier_id: string | null
         }
         Insert: {
           id?: string
@@ -86,7 +93,6 @@ export type Database = {
           price: number
           image_url?: string | null
           category?: string | null
-          supplier_id?: string | null
         }
         Update: {
           id?: string
@@ -95,7 +101,6 @@ export type Database = {
           price?: number
           image_url?: string | null
           category?: string | null
-          supplier_id?: string | null
         }
       }
       supply_lists: {
@@ -135,78 +140,6 @@ export type Database = {
           quantity?: number
         }
       }
-      suppliers: {
-        Row: {
-          id: string
-          name: string
-          contact_email: string | null
-          contact_phone: string | null
-        }
-        Insert: {
-          id?: string
-          name: string
-          contact_email?: string | null
-          contact_phone?: string | null
-        }
-        Update: {
-          id?: string
-          name?: string
-          contact_email?: string | null
-          contact_phone?: string | null
-        }
-      }
-      orders: {
-        Row: {
-          id: string
-          user_id: string
-          status: string
-          total_price: number
-          delivery_option: string
-          delivery_address: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          status?: string
-          total_price: number
-          delivery_option: string
-          delivery_address?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          status?: string
-          total_price?: number
-          delivery_option?: string
-          delivery_address?: string | null
-          created_at?: string
-        }
-      }
-      order_items: {
-        Row: {
-          id: string
-          order_id: string
-          product_id: string
-          quantity: number
-          price_at_purchase: number
-        }
-        Insert: {
-          id?: string
-          order_id: string
-          product_id: string
-          quantity: number
-          price_at_purchase: number
-        }
-        Update: {
-          id?: string
-          order_id?: string
-          product_id?: string
-          quantity?: number
-          price_at_purchase?: number
-        }
-      }
     }
     Views: {
       [_ in never]: never
@@ -227,12 +160,8 @@ export type School = Database['public']['Tables']['schools']['Row'];
 export type Grade = Database['public']['Tables']['grade_levels']['Row'];
 export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type Product = Database['public']['Tables']['products']['Row'];
-export type Supplier = Database['public']['Tables']['suppliers']['Row'];
 export type SupplyList = Database['public']['Tables']['supply_lists']['Row'];
 export type SupplyListItem = Database['public']['Tables']['supply_list_items']['Row'];
-export type Order = Database['public']['Tables']['orders']['Row'];
-export type OrderItem = Database['public']['Tables']['order_items']['Row'];
-
 
 export interface DetailedSupplyListItem {
     id: string;
